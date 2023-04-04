@@ -1,9 +1,11 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const app = express();
 const {
   models: { User },
 } = require("./db");
 const path = require("path");
+require("dotenv").config();
 
 // middleware
 app.use(express.json());
