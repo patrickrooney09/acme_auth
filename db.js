@@ -43,16 +43,16 @@ User.byToken = async (token) => {
 };
 
 User.authenticate = async ({ username, password }) => {
+  let hashed = await bcrypt.hash(password, 5);
+  const correct = await bcrypt.compare(password, hashed);
+  console.log(correct);
   const user = await User.findOne({
     where: {
       username,
-      password,
     },
   });
-  if (user) {
-    console.log("USER:", user.id);
+  if (user && correct === true) {
     const token = jwt.sign({ userId: user.id }, process.env.JWT);
-    console.log("TOKEN:", token);
     return token;
   }
   const error = Error("bad credentials");
